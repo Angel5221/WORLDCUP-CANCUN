@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Y si sí MÉXICO? - Cancún 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background - Playa Cancún */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(180deg, rgba(10,14,39,0.7) 0%, rgba(13,18,53,0.8) 100%),
+                url('https://images.unsplash.com/photo-1552074291-ad4df4632626?w=1920') center/cover;
+            z-index: 0;
+        }
+
+        /* Overlay de estadio */
+        .stadium-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: 
+                linear-gradient(0deg, rgba(0,255,255,0.1) 0%, transparent 100%),
+                url('https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=1920') center bottom/cover;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        /* Fuegos artificiales */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 2.5s ease-out infinite;
+        }
+
+        @keyframes explode {
+            0% {
+                box-shadow: 
+                    0 0 0 0 #ff0,
+                    0 0 0 0 #f0f,
+                    0 0 0 0 #0ff,
+                    0 0 0 0 #f00,
+                    0 0 0 0 #ff0;
+                opacity: 1;
+            }
+            100% {
+                box-shadow: 
+                    -150px -150px 40px 8px #ff0,
+                    150px -150px 40px 8px #f0f,
+                    -150px 150px 40px 8px #0ff,
+                    150px 150px 40px 8px #f00,
+                    0 -200px 40px 8px #ff0;
+                opacity: 0;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            top: -10px;
+            z-index: 3;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Contenido principal */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Timer épico con fuego */
+        .timer-container {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .timer-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(180deg, #ffd700 0%, #ff8c00 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(255,140,0,0.8);
+            letter-spacing: 5px;
+            animation: fireGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes fireGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255,140,0,0.8)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255,69,0,1)); }
+        }
+
+        /* Trofeo central */
+        .trophy-section {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .trophy-container {
+            position: relative;
+            width: 350px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .trophy-glow {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            background: radial-gradient(ellipse at center, rgba(255,215,0,0.6) 0%, transparent 70%);
+            filter: blur(50px);
+            animation: trophyPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes trophyPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .trophy-img {
+            width: 250px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(255,215,0,0.9));
+            animation: trophyFloat 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes trophyFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-30px) rotate(2deg); }
+        }
+
+        /* Anillos de energía */
+        .energy-ring {
+            position: absolute;
+            border: 4px solid rgba(138,43,226,0.7);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 10s linear infinite;
+            box-shadow: 0 0 30px rgba(138,43,226,0.8);
+        }
+
+        .energy-ring:nth-child(1) { 
+            width: 280px; 
+            height: 380px; 
+            animation-delay: 0s;
+            border-color: rgba(138,43,226,0.8);
+        }
+
+        .energy-ring:nth-child(2) { 
+            width: 320px; 
+            height: 420px; 
+            animation-delay: -3s;
+            border-color: rgba(0,255,255,0.8);
+        }
+
+        .energy-ring:nth-child(3) { 
+            width: 360px; 
+            height: 460px; 
+            animation-delay: -6s;
+            border-color: rgba(255,0,255,0.8);
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+                /* Paneles Holográficos */
+        .panels-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            z-index: 10;
+            position: relative;
+            width: 100%;
+        }
+
+        .holo-panel {
+            background: rgba(0, 255, 255, 0.05);
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 
+                0 0 20px rgba(0,255,255,0.3), 
+                inset 0 0 20px rgba(0,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .holo-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 40px rgba(0,255,255,0.5), 
+                inset 0 0 30px rgba(0,255,255,0.2);
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Panel 1: Mapa y Contador */
+        .map-container {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(0,255,255,0.5);
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0,255,255,0.3);
+        }
+
+        .map-container iframe {
+            display: block;
+            width: 100%;
+            height: 180px;
+        }
+
+        .confirmed-box {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.1));
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 15px 30px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 0 15px rgba(255,215,0,0.4);
+        }
+
+        .confirmed-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255,215,0,0.8);
+            line-height: 1;
+        }
+
+        .confirmed-label {
+            font-size: 0.9rem;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* Panel 2: Marcas */
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+
+        .brand-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            height: 80px;
+        }
+
+        .brand-item:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.2);
+            border-color: #ffd700;
+        }
+
+        .brand-item img {
+            max-width: 80%;
+            max-height: 50px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .brand-jw { color: #d4af37; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+        .brand-snacks { color: #ff8c00; }
+
+        /* Panel 3: RSVP */
+        .rsvp-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn-rsvp {
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0,255,136,0.6);
+            border: 2px solid #00ff88;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0,255,136,0.9);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255,68,68,0.6);
+            border: 2px solid #ff4444;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255,68,68,0.9);
+        }
+
+        .btn-rsvp.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        .confirmed-msg {
+            background: rgba(0,255,136,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .confirmed-msg i {
+            font-size: 4rem;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .confirmed-msg p {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        .footer-section {
+            text-align: center;
+            padding: 50px 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .footer-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        .mexico-text {
+            background: linear-gradient(90deg, #006847 0%, #006847 33%, #ffffff 33%, #ffffff 66%, #ce1126 66%, #ce1126 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .flags-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .flag-img {
+            width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s;
+        }
+
+        .flag-img:hover {
+            transform: translateY(-10px) scale(1.1);
+        }
+
+        .fifa-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #ffd700;
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150px);
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.5);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .panels-wrapper { grid-template-columns: 1fr; }
+            .trophy-container { width: 250px; height: 350px; }
+            .trophy-img { width: 180px; }
+            .energy-ring:nth-child(1) { width: 200px; height: 300px; }
+            .energy-ring:nth-child(2) { width: 240px; height: 340px; }
+            .energy-ring:nth-child(3) { width: 280px; height: 380px; }
+            .flag-img { width: 80px; }
+        }
+        
+                .timer-subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: #00ffff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            animation: pulseText 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; text-shadow: 0 0 25px rgba(0, 255, 255, 1); }
+        }
+                .event-info {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+            font-weight: 700;
+            color: #ffd700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: glowBorder 2s ease-in-out infinite;
+        }
+
+        @keyframes glowBorder {
+            0%, 100% { 
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+                border-color: rgba(255, 215, 0, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+                border-color: rgba(255, 215, 0, 1);
+            }
+        }
+        
+        .trophy-img {
+    animation: premiumGlow 3s ease-in-out infinite, 
+               float3D 4s ease-in-out infinite;
+}
+
+@keyframes premiumGlow {
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(255,215,0,0.8)); }
+    50% { filter: brightness(1.3) drop-shadow(0 0 40px rgba(255,215,0,1)); }
+}
+
+@keyframes float3D {
+    0%, 100% { transform: translateY(0) rotateY(-5deg); }
+    50% { transform: translateY(-20px) rotateY(5deg); }
+}
+        .ceviche-image {
+            width: 700px;
+            height: auto;
+            border-radius: 15px;
+            margin-top: 25px;
+            border: 3px solid rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            transition: all 0.3s;
+            animation: cevicheGlow 3s ease-in-out infinite;
+        }
+
+        .ceviche-image:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.8);
+        }
+
+        @keyframes cevicheGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0,255,255,0.5)); }
+            50% { filter: drop-shadow(0 0 25px rgba(0,255,255,0.9)); }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <!-- Fondos -->
+    <div class="bg-image"></div>
+    <div class="stadium-overlay"></div>
+    <div class="fireworks" id="fireworks"></div>
+    <div id="confetti-container"></div>
+
+    <div class="main-content">
+        <!-- Timer -->
+        <div class="timer-container">
+            <div class="timer-subtitle"> Listos PARA EL MUNDIAL</div>
+            <div class="timer-text" id="countdown">00 DÍAS 07:00:00</div>
+            <div class="event-info">🕘 9:00 PM | PUNTO DE REUNIÓN: CEVICHE | ¡NO FALTES!</div>
+        </div>
+
+        <!-- Trofeo -->
+        <div class="trophy-section">
+            <div class="trophy-container">
+                <div class="trophy-glow"></div>
+                <div class="energy-ring"></div>
+                <div class="energy-ring"></div>
+                <div class="energy-ring"></div>
+                <!-- Imagen real del trofeo -->
+                <img src="https://www.sporteimpianti.it/wp-content/uploads/2025/10/Campionato_mondiale_di_calcio_2026-logo-453x700.png" alt="FIFA Trophy" class="trophy-img">
+            </div>
+        </div>
+
+        <!-- Paneles -->
+        <div class="panels-wrapper">
+            
+            <!-- Panel 1: Mapa -->
+            <div class="holo-panel">
+                <div class="panel-title">
+                    <i class="fas fa-map-marker-alt"></i> El Ceviche Cancún
+                </div>
+                <div class="map-container">
+                  <iframe
+    src="https://www.google.com/maps?q=Glorieta%20El%20Ceviche%20Canc%C3%BAn&output=embed"
+    width="100%"
+    height="450"
+    style="border:0;border-radius:16px;"
+    loading="lazy"
+    allowfullscreen
+    referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+                </div>
+                <div class="confirmed-box">
+                    <div class="confirmed-number" id="confirmed-count">0</div>
+                    <div class="confirmed-label">CONFIRMADOS</div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Marcas -->
+            <div class="holo-panel">
+                <div class="panel-title">
+                    <i class="fas fa-shopping-bag"></i> NO OLVIDES LLEVAR TU:
+                </div>
+                <div class="brands-grid">
+                    <div class="brand-item">
+                        <img src="https://thumbs.dreamstime.com/b/logotipo-de-coca-cola-en-la-pantalla-de-ordenador-80980608.jpg" alt="Coca Cola">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Pepsi_logo_2014.svg/1920px-Pepsi_logo_2014.svg.png" alt="Pepsi">
+                    </div>
+                    <div class="brand-item">
+                      <img src="https://i.pinimg.com/736x/e8/00/d3/e800d377a4df667007789b9223638d10.jpg">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Logos_Sabritas_Sol_2021.png">
+                    </div>
+                    <div class="brand-item">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw4Crt_6Is13I7adiA708U3lDK_Simbmm6jTdL_t7cvbsvc-RZdSXcpBM&s=10">
+                      
+                    </div> 
+                    <div class="brand-item">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX-vtKzJoEpVtLM6bIjQtZ0aZpKQwkmL0v8O96U5WGZzP2eYWz2lWuQ5PN&s=10">
+                      
+                    </div>
+                
+                    
+                </div>
+            </div>
+
+            <!-- Panel 3: RSVP -->
+            <div class="holo-panel">
+                <div class="panel-title">
+                    <i class="fas fa-ticket-alt"></i> ¿ASISTIRÁS?
+                </div>
+                <div class="rsvp-buttons" id="rsvp-buttons">
+                    <button class="btn-rsvp btn-yes" id="btn-yes" onclick="confirmarAsistencia('si')">
+                        <i class="fas fa-check-circle"></i> SÍ AHÍ ESTARÉ
+                    </button>
+                    <button class="btn-rsvp btn-no" id="btn-no" onclick="confirmarAsistencia('no')">
+                        <i class="fas fa-times-circle"></i> NO PODRÉ IR
+                    </button>
+                </div>
+                <div id="confirmation-message-container" style="display: none; width: 100%;"></div>
+            </div>
+
+        </div>
+                <!-- Footer -->
+        <div class="footer-section">
+            <h2 class="footer-title">¿Y si sí <span class="mexico-text">MÉXICO</span>?</h2>
+            <div class="flags-container">
+                <img src="https://media.istockphoto.com/id/639703054/es/foto/bandera-de-inglaterra.jpg?s=612x612&w=0&k=20&c=3Nftpv5a7nRx46Cmc2ZUNFDsW0_cHcWzDOh8pHxyd1A=" alt="Inglaterra" class="flag-img">
+                
+                
+                <img src="https://img.magnific.com/fotos-premium/ilustracion-bandera-mexicana-ondeando_438099-35098.jpg?semt=ais_hybrid&w=740&q=80" alt="México" class="flag-img">
+            </div>
+                        <div class="fifa-badge">
+                <i class="fas fa-futbol"></i> FIFA WORLD CUP 2026
+            </div>
+            <br/>
+            <!-- Imagen de El Ceviche -->
+            <img src="ceviche.png" alt="El Ceviche Cancún" class="ceviche-image">
+            <p style="margin-top: 10px; font-size: 1.1rem; color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.8);">📍 El Ceviche - Cancún</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+       <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ==========================================
+        // 🔥 CONFIGURACIÓN DE FIREBASE
+        // PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE
+        // ==========================================
+        const firebaseConfig = {
+  apiKey: "AIzaSyAcG4axi4fdcBXrJDq6Qf-zWCuMAd58Wpo",
+  authDomain: "ceviche-cancun-8c280.firebaseapp.com",
+  databaseURL: "https://ceviche-cancun-8c280-default-rtdb.firebaseio.com",
+  projectId: "ceviche-cancun-8c280",
+  storageBucket: "ceviche-cancun-8c280.firebasestorage.app",
+  messagingSenderId: "623716855556",
+  appId: "1:623716855556:web:fed6fa33c9390107612a51"
+};
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // ==========================================
+        // ⚽ FECHA DEL EVENTO - CÁMBIALA AQUÍ
+        // ==========================================
+        const FECHA_DEL_EVENTO = new Date(2026, 5, 15, 21, 0, 0); // 15 Junio 2026, 9:00 PM
+
+        // ==========================================
+        // CUENTA REGRESIVA
+        // ==========================================
+        function iniciarCuentaRegresiva() {
+            function actualizar() {
+                const ahora = new Date().getTime();
+                const distancia = FECHA_DEL_EVENTO.getTime() - ahora;
+
+                if (distancia < 0) {
+                    document.getElementById('countdown').textContent = "¡ES HOY! ⚽";
+                    return;
+                }
+
+                const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown').textContent = 
+                    `${dias} DÍAS ${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+            }
+
+            actualizar();
+            setInterval(actualizar, 1000);
+        }
+
+        // ==========================================
+        // 🔥 CONTADOR GLOBAL EN TIEMPO REAL
+        // ==========================================
+                // 🔥 CONTADOR GLOBAL EN TIEMPO REAL
+        function inicializarContadorGlobal() {
+            const contadorRef = database.ref('contador');
+            
+            // Si no existe, crearlo con 127
+            contadorRef.once('value', (snapshot) => {
+                if (!snapshot.exists()) {
+                    contadorRef.set(127);
+                }
+            });
+
+            // Escuchar cambios en tiempo real
+            contadorRef.on('value', (snapshot) => {
+                const total = snapshot.val() || 127;
+                document.getElementById('confirmed-count').textContent = total;
+            });
+        }
+
+        function incrementarContadorGlobal() {
+            const contadorRef = database.ref('contador');
+            contadorRef.transaction((current) => {
+                return (current || 127) + 1;
+            });
+        }
+
+        // ==========================================
+        // SISTEMA DE CONFIRMACIÓN (FIREBASE + LOCAL)
+        // ==========================================
+        function verificarEstadoPrevio() {
+            // Verificar localmente si ya confirmó
+            const guardado = localStorage.getItem('cevicheCancun_confirmacion');
+            if (guardado) {
+                const datos = JSON.parse(guardado);
+                mostrarMensajeConfirmacion(datos.respuesta, false);
+            }
+        }
+
+        function confirmarAsistencia(respuesta) {
+            const yaConfirmo = localStorage.getItem('cevicheCancun_confirmacion');
+            if (yaConfirmo) {
+                mostrarToast('️ Ya registraste tu respuesta anteriormente');
+                return;
+            }
+
+            // Guardar localmente (para que no vuelva a votar)
+            localStorage.setItem('cevicheCancun_confirmacion', JSON.stringify({
+                respuesta: respuesta,
+                fecha: new Date().toISOString()
+            }));
+
+            // Si dijo que SÍ, incrementar contador global
+            if (respuesta === 'si') {
+                incrementarContadorGlobal();
+                mostrarToast('🎉 ¡Confirmado! Nos vemos en El Ceviche');
+            } else {
+                mostrarToast('😢 Gracias por avisar');
+            }
+
+            mostrarMensajeConfirmacion(respuesta, true);
+        }
+
+        function mostrarMensajeConfirmacion(respuesta, esNuevo) {
+            const botones = document.getElementById('rsvp-buttons');
+            const contenedorMensaje = document.getElementById('confirmation-message-container');
+            
+            botones.classList.add('confirmed');
+            document.getElementById('btn-yes').classList.add('disabled');
+            document.getElementById('btn-no').classList.add('disabled');
+
+            setTimeout(() => {
+                botones.style.display = 'none';
+                contenedorMensaje.style.display = 'block';
+                
+                let html = '';
+                if (respuesta === 'si') {
+                    html = `
+                        <div class="confirmed-msg">
+                            <i class="fas fa-check-circle"></i>
+                            <p>¡Excelente! <br><strong>Nos vemos en El Ceviche Cancún</strong></p>
+                        </div>`;
+                } else {
+                    html = `
+                        <div class="confirmed-msg" style="border-color: #ff4444; background: rgba(255,68,68,0.1);">
+                            <i class="fas fa-times-circle" style="color: #ff4444;"></i>
+                            <p>Qué lástima <br><strong>¡Gracias por avisar!</strong></p>
+                        </div>`;
+                }
+                contenedorMensaje.innerHTML = html;
+            }, 300);
+        }
+
+        function mostrarToast(mensaje) {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensaje;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // ==========================================
+        // FUEGOS ARTIFICIALES
+        // ==========================================
+        function crearFuegoArtificial() {
+            const contenedor = document.getElementById('fireworks');
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + '%';
+            firework.style.top = Math.random() * 60 + '%';
+            contenedor.appendChild(firework);
+            setTimeout(() => { firework.remove(); }, 2500);
+        }
+
+        // ==========================================
+        // CONFETTI
+        // ==========================================
+        function crearConfetti() {
+            const contenedor = document.getElementById('confetti-container');
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            confetti.style.background = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'][Math.floor(Math.random() * 5)];
+            contenedor.appendChild(confetti);
+            setTimeout(() => { confetti.remove(); }, 5000);
+        }
+
+        // ==========================================
+        // INICIALIZACIÓN
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            iniciarCuentaRegresiva();
+            inicializarContadorGlobal(); // 🔥 Contador en tiempo real
+            verificarEstadoPrevio();
+
+            // Fuegos artificiales
+            setInterval(crearFuegoArtificial, 1500);
+            
+            // Confetti inicial
+            for (let i = 0; i < 20; i++) {
+                setTimeout(crearConfetti, i * 100);
+            }
+            setInterval(crearConfetti, 2000);
+        });
+
+        // Resetear (consola)
+        function resetearDemo() {
+            localStorage.removeItem('cevicheCancun_confirmacion');
+            location.reload();
+        }
+
+        console.log(' Firebase conectado');
+        console.log(' Para resetear: resetearDemo()');
+    </script>
+</body>
+</html>
